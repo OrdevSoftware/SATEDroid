@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 public class SateNombresBDAdapter {
 	
@@ -30,19 +31,26 @@ public class SateNombresBDAdapter {
 	
 	public SateNombresBDAdapter(Context context)
 	{
-	  this.contexto = context;
+		this.contexto = context;
 	}
 	
+
 	public SateNombresBDAdapter abrir() throws SQLException
 	{
+	  Log.d(this.getClass().toString(), "Abrimos la BBDD.");
+
 	  databaseHelper = new SatePLCBDHelper(contexto);
 	  db = databaseHelper.getWritableDatabase();
 	  return this;
 	}
 	
+
+
 	public void cerrar()
 	{
-	  databaseHelper.close();
+		Log.d(this.getClass().toString(), "Cerramos la BBDD.");
+
+		databaseHelper.close();
 	}
 	
 	// Devuelve una lista (_id, nombre) con todos los registros

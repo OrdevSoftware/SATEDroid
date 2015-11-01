@@ -26,7 +26,8 @@
         </activity>
         <activity
             android:name="com.ordevsoftware.satedroid.FormularioPLC"
-            android:label="@string/actividadSecundaria" />
+            android:label="@string/actividadSecundaria" >
+        </activity>
     </application>
 
 </manifest>

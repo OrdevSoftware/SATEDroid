@@ -43,7 +43,7 @@ public class SatePLCBDAdapter {
 	
 	public SatePLCBDAdapter abrir() throws SQLException
 	{
-	    Log.e("SatePLCBDAdapter", "Abrimos la Base de Datos");
+		Log.d(this.getClass().toString(), "Abrimos la BBDD.");
 	
 	    databaseHelper = new SatePLCBDHelper(contexto);
 	    database = databaseHelper.getWritableDatabase();
@@ -53,7 +53,7 @@ public class SatePLCBDAdapter {
 	
 	public void cerrar()
 	{
-	    Log.e("SatePLCBDAdapter", "Cerramos la Base de Datos");
+		Log.d(this.getClass().toString(), "Cerramos la Base de Datos");
 	   
 	    databaseHelper.close();
 	}

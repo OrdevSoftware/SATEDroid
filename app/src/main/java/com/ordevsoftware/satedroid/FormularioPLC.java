@@ -174,7 +174,9 @@ public class FormularioPLC extends Activity {
 
 				}
 			});
-	   }
+
+			databaseAdapter.cerrar();
+		}
 	   
 	   
 	   	//TAREAS ASINCRONAS

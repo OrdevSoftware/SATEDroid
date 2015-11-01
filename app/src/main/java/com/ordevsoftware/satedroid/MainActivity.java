@@ -59,13 +59,15 @@ public class MainActivity extends ListActivity {
 	    databaseAdapter.abrir();
 	    
 	    plcs = (Spinner) findViewById(R.id.spinner_PLC_nombre);
-	    // Creamos el adaptador de 'provincias' para ir cumplimentando el Spinner
+
+	    // Creamos el adaptador de 'nombres' para ir cumplimentando el Spinner
 	    databaseNombresAdapter = new SateNombresBDAdapter(this) ;
 	    databaseNombresAdapter.abrir();
 	    cursorListaNombresPLCs =databaseNombresAdapter.getLista();
 	    SimpleCursorAdapter adapterPLCS = new SimpleCursorAdapter(this,android.R.layout.simple_spinner_item,cursorListaNombresPLCs,new String[] { SateNombresBDAdapter.C_COLUMNA_NOMBRE}, new int[] {android.R.id.text1});
 	    adapterPLCS.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-	    plcs.setPrompt("Elige una PLC");
+
+	     plcs.setPrompt("Elige una PLC");
 	    plcs.setAdapter(adapterPLCS);	 
 
         plcs.setOnItemSelectedListener(new OnItemSelectedListener() {

@@ -35,7 +35,7 @@ public class SatePLCBDHelper extends SQLiteOpenHelper {
 		//Generacion de Tabla de talleres
 		try
 		{
-			Log.e("SatePLCBDHelper", "Entramos a tomar sentencias SQL de bdnombres.sql");
+			Log.i("SatePLCBDHelper", "Entramos a tomar sentencias SQL de bdnombres.sql");
 			
 			//Generamos la Tabla, leyendo del fichero .raw. Ubicado en /res/raw/
 			InputStream ficheroraw = myContext.getResources().openRawResource(R.raw.bdnombres);
@@ -48,8 +48,8 @@ public class SatePLCBDHelper extends SQLiteOpenHelper {
 
 				//Exec de cada sentencia SQL
 				database.execSQL(textoSQL);
-				Log.e("DaciaTallerBDHelper", textoSQL);			
-				
+				Log.i("SatePLCBDHelper", textoSQL);
+
 			} // end while
 			ficheroraw.close();
 	
@@ -81,7 +81,7 @@ public class SatePLCBDHelper extends SQLiteOpenHelper {
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
 	{
-	    /*
+		Log.d(this.getClass().toString(), "En onUpGrade-> oldVersion:" + oldVersion + " newVersion:" + newVersion);/*
 		// Actualización a versión 2
 	    if (oldVersion < 2)
 	    {
