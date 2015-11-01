@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- From: file:/C:/Users/opcuser/StudioProjects/SATEDroid/app/src/main/res/values/strings.xml -->
+    <eat-comment/>
+    <string name="actividadPreferencias">Preferencias</string>
+    <string name="actividadSecundaria">Formulario PLC:</string>
+    <string name="app_name">SATEDroid</string>
+    <string name="bd_upgrade_2">Actualización versión 2 finalizada</string>
+    <string name="boton_conectar">Conectar</string>
+    <string name="boton_desconectar">Desconectar</string>
+    <string name="boton_read">READ  MB1170</string>
+    <string name="boton_reset">RESET</string>
+    <string name="icono_descrip_Siemens">Icono SIEMENS</string>
+    <string name="label_PLC_nombre">Nombre del PLC:</string>
+    <string name="label_direccion">Direccion IP:</string>
+    <string name="label_nombre_taller">Nombre PLC:</string>
+    <string name="label_operacion">Operaciones de mantenimiento:</string>
+    <string name="label_pasivo">Taller visitado</string>
+    <string name="label_provincia">Provincia:</string>
+    <string name="label_telefono">Teléfono:</string>
+    <string name="label_zona">Zona:</string>
+    <string name="lista_vacia">Sin Datos</string>
+    <string name="menu_formulario_editar">Editar</string>
+    <string name="menu_formulario_eliminar">Eliminar</string>
+    <string name="menu_formulario_ventana_cancelar">Cancelar</string>
+    <string name="menu_formulario_ventana_guardar">Guardar</string>
+    <string name="menu_principal_acercade">Acerca de...</string>
+    <string name="menu_principal_insertar">Nuevo Taller</string>
+    <string name="menu_principal_preferencias">Preferencias</string>
+    <string name="menu_principal_visualizar">Ver Informacion</string>
+    <string name="taller_editar_confirmacion">Taller modificado</string>
+    <string name="taller_editar_titulo">Editar Taller</string>
+    <string name="taller_eliminar_confirmacion">Taller eliminada</string>
+    <string name="taller_eliminar_mensaje">¿Seguro que desea eliminar el Taller?</string>
+    <string name="taller_eliminar_titulo">Eliminar Taller</string>
+    <string name="taller_insertar_confirmacion">Taller creado</string>
+    <string name="taller_insertar_titulo">Nuevo Taller</string>
+    <!-- From: file:/C:/Users/opcuser/StudioProjects/SATEDroid/app/src/main/res/values/styles.xml -->
+    <eat-comment/>
+    <style name="AppBaseTheme" parent="android:Theme.Light">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+    </style>
+    <style name="AppTheme" parent="AppBaseTheme">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style>
+</resources>

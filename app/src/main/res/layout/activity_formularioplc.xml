@@ -1,0 +1,153 @@
+<ScrollView 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FormularioPLC" >
+
+   <RelativeLayout
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:orientation="vertical"
+       android:padding="10dp" >
+
+	   <EditText
+           android:id="@+id/nombre"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_alignParentLeft="true"
+		   android:inputType = "text"
+           android:ems="8" />
+
+	   <EditText
+           android:id="@+id/direccion"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_alignParentLeft="true"
+		   android:ems="10"
+           android:inputType="textMultiLine"
+		   android:layout_below="@+id/nombre">
+       </EditText>
+
+       <EditText
+           android:id="@+id/zona"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_alignParentLeft="true"
+           android:inputType = "text"
+           android:ems="10"
+           android:layout_below="@+id/direccion">
+       </EditText>
+
+
+       <LinearLayout
+            android:id="@+id/botonera"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/zona"
+            android:gravity="center"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/boton_conectar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/boton_conectar" />
+
+            <TextView
+                android:id="@+id/txtstatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=".. En espera .."
+                android:textSize="8pt"
+                android:gravity="center"/>
+
+            <ImageView
+                android:layout_height="wrap_content"
+                android:src="@drawable/off"
+                android:id="@+id/leds"
+                android:layout_width="fill_parent"
+                android:gravity="fill" >
+            </ImageView>
+
+       </LinearLayout>
+
+       <LinearLayout
+		     android:id="@+id/botonera2"
+		     android:layout_width="match_parent"
+		     android:layout_height="wrap_content"
+		     android:layout_below="@id/botonera"
+		     android:layout_marginTop="20dp"
+		     android:orientation="horizontal" >
+
+		     <Button
+		         android:id="@+id/boton_desconectar"
+		         android:layout_width="wrap_content"
+		         android:layout_height="wrap_content"
+		         android:text="@string/boton_desconectar" />
+       </LinearLayout>
+ 		
+       
+ 		
+       <LinearLayout
+		     android:id="@+id/botonera3"
+		     android:layout_width="match_parent"
+		     android:layout_height="wrap_content"
+		     android:layout_below="@id/botonera2"
+		     android:gravity="center|left"
+		     android:layout_marginTop="15dp"
+		     android:orientation="vertical"
+             android:layout_alignParentEnd="false">
+
+            <LinearLayout
+                android:id="@+id/botonera4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/botonera"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal" >
+
+                <Button
+                    style="?android:attr/buttonStyleSmall"
+                    android:id="@+id/boton_read"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:width="100dp"
+                    android:onClick="invocaIntent"
+
+                    android:layout_marginTop="5dip"
+                    android:text="@string/boton_read" android:gravity="left" />
+
+                <TextView
+                    android:id="@+id/txtstatus2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=".. En espera .."
+                    android:textSize="6pt"
+                    android:gravity="left"
+                    android:layout_gravity="center_horizontal" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/botonera5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/botonera"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal" >
+
+                <Button
+                    style="?android:attr/buttonStyleSmall"
+                    android:id="@+id/boton_reset"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:width="100dp"
+                    android:layout_marginTop="5dip"
+                    android:text="@string/boton_reset" android:gravity="center_horizontal" />
+            </LinearLayout>
+       </LinearLayout>
+
+   </RelativeLayout>
+
+</ScrollView>
