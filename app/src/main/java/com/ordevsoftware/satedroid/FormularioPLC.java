@@ -36,22 +36,23 @@ import android.widget.Toast;
 public class FormularioPLC extends Activity {
 	 
 	private SatePLCBDAdapter databaseAdapter;
-   
+
 	// Modo del formulario
 	private int modo ;
-	 
+
 	// Identificador del registro que se edita cuando la opcion es MODIFICAR
 	private long id ;
-	 
+
 	// Elementos de la vista
 	private EditText nombre;
 	private EditText direccion;
 	private EditText zona;
-	
+
 	private Button boton_conectar;
 	private Button boton_desconectar;
-	private Button boton_read;	
-	
+	private Button boton_read;
+	private Button boton_reset;
+
 	private TextView txtstatus;
 	private TextView txtstatus2;
 	private EditText ipinput, portinput, input_txt;
@@ -62,10 +63,10 @@ public class FormularioPLC extends Activity {
 	ObjectOutputStream oos;
 	ObjectInputStream ois;
 	Mensaje_data mdata;
-	
-	
-	
-	
+
+
+
+
 	public static boolean Connection = false;
 	public static int i, j;
 	public static long a, b, c;
@@ -79,47 +80,47 @@ public class FormularioPLC extends Activity {
 	public static byte[] by;
 	public static String IP;
 	 
-	   @Override
-	   protected void onCreate(Bundle savedInstanceState) {
-	      super.onCreate(savedInstanceState);
-	      setContentView(R.layout.activity_formularioplc);
-	 
-	      Intent intent = getIntent();
-	      Bundle extra = intent.getExtras();
-	 
-	      Log.e("FormularioPLC", "Entramos en onCreate");
-	      
-	      if (extra == null) return;
-	 
-	      // Obtenemos los elementos de la vista
-	      nombre = (EditText) findViewById(R.id.nombre);
-	      direccion = (EditText) findViewById(R.id.direccion);
-	      zona = (EditText) findViewById(R.id.zona);
-	      
-	      txtstatus = (TextView) findViewById(R.id.txtstatus);
-	      txtstatus2 = (TextView) findViewById(R.id.txtstatus2);
-			
-	      leds = (ImageView) findViewById(R.id.leds);
-    
-	      boton_conectar = (Button) findViewById(R.id.boton_conectar);
-	      boton_desconectar = (Button) findViewById(R.id.boton_desconectar);
-	      boton_read = (Button) findViewById(R.id.boton_read);
-	      
-	      // Creamos el adaptador 
-	      databaseAdapter = new SatePLCBDAdapter(this);
-	      databaseAdapter.abrir();
+		@Override
+		protected void onCreate(Bundle savedInstanceState) {
+			super.onCreate(savedInstanceState);
+			setContentView(R.layout.activity_formularioplc);
+
+			Intent intent = getIntent();
+			Bundle extra = intent.getExtras();
+
+			Log.i("FormularioPLC", "Entramos en onCreate");
+
+			if (extra == null) return;
+
+			// Obtenemos los elementos de la vista
+			nombre = (EditText) findViewById(R.id.nombre);
+			direccion = (EditText) findViewById(R.id.direccion);
+			zona = (EditText) findViewById(R.id.zona);
+
+			txtstatus = (TextView) findViewById(R.id.txtstatus);
+			txtstatus2 = (TextView) findViewById(R.id.txtstatus2);
+
+			leds = (ImageView) findViewById(R.id.leds);
+
+			boton_conectar = (Button) findViewById(R.id.boton_conectar);
+			boton_desconectar = (Button) findViewById(R.id.boton_desconectar);
+			boton_read = (Button) findViewById(R.id.boton_read);
+			boton_reset = (Button) findViewById(R.id.boton_reset);
+
+			// Creamos el adaptador
+			databaseAdapter = new SatePLCBDAdapter(this);
+			databaseAdapter.abrir();
 	 
 	     
-	      // Obtenemos el identificador del registro si viene indicado
-	      if (extra.containsKey(SatePLCBDAdapter.C_COLUMNA_ID))
-	      {
-	         id = extra.getLong(SatePLCBDAdapter.C_COLUMNA_ID);
-	         consultar(id);
-	      }
+			// Obtenemos el identificador del registro si viene indicado
+			if (extra.containsKey(SatePLCBDAdapter.C_COLUMNA_ID))
+			{
+			 id = extra.getLong(SatePLCBDAdapter.C_COLUMNA_ID);
+			 consultar(id);
+			}
 	 
-	      // Establecemos el modo del formulario
-	      establecerModo(extra.getInt(MainActivity.C_MODO));//
-	      
+			// Establecemos el modo del formulario
+			establecerModo(extra.getInt(MainActivity.C_MODO));//
 
 			//Al clickear en conectar
 			boton_conectar.setOnClickListener(new OnClickListener() {
@@ -151,14 +152,28 @@ public class FormularioPLC extends Activity {
 					TareaReadfromPlc tarea = new TareaReadfromPlc();
 					tarea.execute(direccion.getText().toString());
 					*/
-
 					// Iniciamos la tarea asincrona
 					TareaReadData2 tarea = new TareaReadData2();
 					tarea.execute(direccion.getText().toString());
 
 				}
 			});
-	       
+
+			//Al clickear en boton reset
+			boton_reset.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					/*
+					// Iniciamos la tarea asincrona
+					TareaReadfromPlc tarea = new TareaReadfromPlc();
+					tarea.execute(direccion.getText().toString());
+					*/
+					// Iniciamos la tarea asincrona
+					TareaWriteData tarea = new TareaWriteData();
+					tarea.execute(direccion.getText().toString());
+
+				}
+			});
 	   }
 	   
 	   
@@ -178,15 +193,16 @@ public class FormularioPLC extends Activity {
 			      
 				//si nos pudimos conectar
 				if (resultado) {//mostramos mensaje 
-					Log.e("FormularioPLC", "Entro en onPostExecute resultado=true");
+					Log.i("FormularioPLC", "Entro en onPostExecute resultado=true");
 					Set_txtstatus("Conexion OK ", 1);
-					Log.e("FormularioPLC", "Entro en onPostExecute antes de Change_leds(true)");
+					Log.i("FormularioPLC", "Entro en onPostExecute antes de Change_leds(true)");
 					Change_leds(true);//camiamos img a verde
 					// Iniciamos la tarea asincrona
 					TareaStartConnection tareaSC = new TareaStartConnection();
 					tareaSC.execute(direccion.getText().toString());
 
-				} else {//error al conectarse 
+				} else {//error al conectarse
+					Log.e("FormularioPLC", "ERROR en onPostExecute antes de Change_leds(true)");
 					Change_leds(false);//camiamos img a rojo
 					//mostramos msg de error
 					Set_txtstatus("Error lo siento.. ", 0);
@@ -194,8 +210,6 @@ public class FormularioPLC extends Activity {
 			} // end onPostExecute
 		}
 
-
-		
 		//Conectamos
 		public boolean Connect(String param1) {
 			//Obtengo datos ingresados en campos
@@ -203,14 +217,14 @@ public class FormularioPLC extends Activity {
 			String IP = param1;
 			int PORT = Integer.valueOf("102");
 			//int PORT = 102;
-			Log.e("FormularioPLC", "Entramos en connect)"+ IP + " " + PORT);
+			Log.i("FormularioPLC", "Entramos en connect)"+ IP + " " + PORT);
 			try {//creamos sockets con los valores anteriores
-				Log.e("FormularioPLC", "Paso1");
+				Log.i("FormularioPLC", "Paso1");
 				miCliente = new Socket(IP, PORT);
-				Log.e("FormularioPLC", "Paso2");
+				Log.i("FormularioPLC", "Paso2");
 				//si nos conectamos
 				if (miCliente.isConnected() == true) {
-					Log.e("FormularioPLC", "miCliente.isConnected() OK OK");
+					Log.i("FormularioPLC", "miCliente.isConnected() OK OK");
 					return true;
 				} else {
 					Log.e("FormularioPLC", "miCliente.isConnected() No OK");
@@ -220,7 +234,7 @@ public class FormularioPLC extends Activity {
 				//Si hubo algun error mostrmos error
 				txtstatus.setTextColor(Color.RED);
 				txtstatus.setText(" !!! ERROR  !!!");
-				Log.e("Error connect()", "" + e);
+				Log.e("FormularioPLC","Error connect()" + e);
 				return false;
 			}
 		}
@@ -238,12 +252,12 @@ public class FormularioPLC extends Activity {
 			/** Cuando la tarea ha acabado se invoca autom�ticamente este m�todo */
 			protected void onPostExecute(Boolean resultado) {
 			      
-				//si nos pudimos conectar
+				//Si nos pudimos Desconectar
 				if (resultado) {//mostramos mensaje 
 					Set_txtstatus("Desconectado", 0);
 					//camibmos led a rojo
 					Change_leds(false);
-					Log.e("Disconnect() -> ", "!ok!");
+					Log.i("Disconnect() -> ", "!ok!");
 
 				} else {//error al conectarse 
 					Set_txtstatus(" Error  ", 0);
@@ -354,11 +368,11 @@ public class FormularioPLC extends Activity {
 			
 		}	   
 	   
-	   	// Clase para desconectar un socket como una tarea as�ncrona.
+	   	// Clase para desconectar un socket como una tarea asincrona.
 		// Es decir, podemos seguir usando la interfaz de usuario.
 		private class TareaReadfromPlc extends AsyncTask<String, Void, Long> {
 			
-			// M�todo que se ejecuta en segundo plano
+			// Metodo que se ejecuta en segundo plano
 			protected Long doInBackground(String... params) {
 				return Readfromplc(params[0]);
 			}
@@ -369,11 +383,11 @@ public class FormularioPLC extends Activity {
 				//si nos pudimos conectar
 				if (resultado>0) {//mostramos mensaje 
 					Set_txtstatus("Reading data",1);
-					Set_txtstatus2(String.valueOf(resultado),1);
+					Set_txtstatus2(String.valueOf(resultado), 1);
 
 				} else {//error al conectarse 
-					Set_txtstatus("Make first connection",0);
-					Set_txtstatus2("Problemas",0);
+					Set_txtstatus("SIN Conexión",0);
+					Set_txtstatus2("Problemas", 0);
 				}
 
 				
@@ -415,13 +429,13 @@ public class FormularioPLC extends Activity {
 			/** Cuando la tarea ha acabado se invoca automáticamente este método */
 			protected void onPostExecute(String resultado) {
 			      
-				//si nos pudimos conectar
+				//Si NO nos pudimos conectar
 				if (resultado.compareToIgnoreCase("0") == 0) {//mostramos mensaje 
-					Set_txtstatus("Make first connection",0);
+					Set_txtstatus("SIN Conexión",0);
 					Set_txtstatus2("Problemas",0);		
 
 
-				} else {//error al conectarse 
+				} else {
 					Set_txtstatus("Reading data",1);
 					Set_txtstatus2(String.valueOf(resultado),1);
 				}
@@ -436,7 +450,7 @@ public class FormularioPLC extends Activity {
 			
 			if (Connection) {
 
-				var = ReadData2(Nodave.FLAGS, 0, 1170, 1,1);
+				var = ReadData2(Nodave.FLAGS, 0, 1170, 1, 1);
 				return var;
 			}else{
 				return var;
@@ -481,14 +495,70 @@ public class FormularioPLC extends Activity {
 	        } else {
 	            return "off-line";
 	        }
-	    }		
-		
-		
-		
-		
-		
-		
-	   private void establecerModo(int m)
+	    }
+
+
+	// Clase para desconectar un socket como una tarea asíncrona.
+	// Es decir, podemos seguir usando la interfaz de usuario.
+	private class TareaWriteData extends AsyncTask<String, Void, String> {
+
+		// Método que se ejecuta en segundo plano
+		protected String doInBackground(String... params) {
+
+			return WriteFromPLC(params[0]);
+		}
+
+		/** Cuando la tarea ha acabado se invoca automáticamente este método */
+		protected void onPostExecute(String resultado) {
+
+			//si nos pudimos conectar
+			if (resultado.compareToIgnoreCase("0") == 0) {//mostramos mensaje
+				Set_txtstatus("Writing data",1);
+				Set_txtstatus2(String.valueOf(resultado),1);
+
+			} else {//error al conectarse
+				Set_txtstatus("SIN Conexión",0);
+				Set_txtstatus2("Problemas en Writing",0);
+			}
+
+
+		} // end onPostExecute
+	}
+
+
+	public String WriteFromPLC(String params) {
+		String var = "";
+		int iVar=1;
+
+		if (Connection) {
+
+			iVar = SetMBInfo(Nodave.FLAGS, 1170, 1, (byte)0x01);
+			var=String.valueOf(iVar);
+			Log.i("FormularioPLC", "WriteFromPLC var:"+var);
+
+			return var;
+		}else{
+			Log.e("FormularioPLC", "Error Connection. WriteFromPLC var:" + var);
+			return var;
+
+		}
+	}
+
+
+
+	public static int SetMBInfo(int area,int byteStart, int numBytes, byte arrayBytes)
+	{
+		int LastError=0;
+		byte[] bPrueba = {arrayBytes};
+
+
+		LastError=dc.writeBytes(area, 0, byteStart, numBytes, bPrueba);
+
+		return LastError;
+	}
+
+
+	private void establecerModo(int m)
 	   {
 	      this.modo = m ;
 	 

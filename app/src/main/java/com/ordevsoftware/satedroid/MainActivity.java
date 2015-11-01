@@ -29,6 +29,7 @@ public class MainActivity extends ListActivity {
 	public static final String C_MODO  = "modo" ;
     public static final int C_VISUALIZAR = 551 ;
 
+
 	private SatePLCBDAdapter databaseAdapter;
 	
 	private PLCsAdapter plcAdapter;
@@ -127,6 +128,8 @@ public class MainActivity extends ListActivity {
 		// Nos aseguramos que es la petici�n que hemos realizado
 		switch(requestCode)
 		{
+
+
 
          case C_VISUALIZAR:
              	if (resultCode == RESULT_OK){
